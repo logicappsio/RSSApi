@@ -168,11 +168,21 @@ namespace RSSConnector.Controllers
                                     {
                                         if (!String.IsNullOrEmpty(keywords))
                                         {
+                                            bool found = false;
                                             // check for keywords
-                                            if (description.IndexOf(keywords) < 0 && title.IndexOf(keywords) < 0)
+                                            string[] words = keywords.Split(',');
+                                            foreach (string word in words)
                                             {
-                                                // drop item as no keyword match and keep going
-                                                break;
+                                                if (description.IndexOf(word, StringComparison.InvariantCultureIgnoreCase) > -1 || title.IndexOf(word, StringComparison.InvariantCultureIgnoreCase) > -1)
+                                                {
+                                                    // found it
+                                                    found = true;
+                                                }
+                                            }
+                                            if (!found)
+                                            {
+                                                // move on - slip this item
+                                                break; 
                                             }
                                         }
                                         item = new Item()
