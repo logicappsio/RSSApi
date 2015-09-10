@@ -10,7 +10,9 @@ Click the "Deploy to Azure" button above.  You can create new resources or refer
  * API App Host (this is the site behind the api app that this github code deploys to)
 
 ## API Documentation ##
-The API app has one action - GetFeedItem - which returns an Item containing the oldest feed item since the date provided.
+The API app has one action - GetFeedItem - which returns an Item containing the oldest feed item since the date provided. The idea is that you can call second and subsequent times with the date/time of the previously returned item to ensure you can retrieve every item you want since the original date/time specified.
+
+Note that RSS does not provide a way to specify to the feed provider a date from which you would like historical feed items. Therefore, the Uri for the RSS you want to consume can arbitrarily return any number of items of any age and therefore you must check regularly enough that you can pick up all items should you need to. The RSS connector API takes care of feeds where the items are not returned in chronological order thereby ensuring that you will receive the items in the publication date order.
 
 The action has three input parameters:
 
