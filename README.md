@@ -36,7 +36,7 @@ The following fields are provided in the item object returned (note that not all
 | LastUpdateDate | Date the item was last revised |
 
 ###Trigger###
-You can use the RSS Connector API as a trigger.  It takes FeedUri and Keywords as parameters and will trigger the logic app (and pass result) whenever a new item is found.  You set the frequency in which the polling on the specified Uri occurs. THe trigger will continue to fire until all new items have been processed.
+You can use the RSS Connector API as a trigger.  It takes FeedUri and Keywords as parameters and will trigger the logic app (and pass result) whenever a new item is found.  You set the frequency in which the polling on the specified Uri occurs. The trigger will continue to fire until all new items have been processed.
 
 ## Example ##
 | Step   | Info |
