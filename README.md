@@ -20,23 +20,8 @@ The action has three input parameters:
 | FromDate *(optional)* | The date/time from which a feed item is required |
 | Keywords *(optional)* | A comma-seperated list of words or phrases to match against the feed item required |
 
-#### Item Structure ####
-```javascript
-{ "object1": { ... }, "object2": "value" }
-```
-In script could then reference object1 and object2 - both passed in as a JToken.
-
-#### Libraries Array Structure ####
-```javascript
-[{"filename": "name.dll", "assembly": {Base64StringFromConnector}, "usingstatment": "using Library.Reference;"}, { ... } ] 
-```
-
-####AppDomain ####
-
-The script executes inside of an AppDomain that includes some standard System assemblies as well as Newtonsoft.Json.  The full list can be found [here](#compiler-information)
-
 ###Trigger###
-You can use the C# Script API as a trigger.  It takes a single input of "script" and will trigger the logic app (and pass result) whenever the script returns anything but `false`.  You set the frequency in which the script runs.
+You can use the RSS Connector API as a trigger.  It takes FeedUri and Keywords as parameters and will trigger the logic app (and pass result) whenever a new item is found.  You set the frequency in which the polling on the specified Uri occurs. THe trigger will continue to fire until all new items have been processed.
 
 ## Example ##
 | Step   | Info |
