@@ -1,4 +1,4 @@
-# C# Scripting API
+# RSS Connector API
 [![Deploy to Azure](http://azuredeploy.net/deploybutton.png)](https://azuredeploy.net/)
 
 ## Deploying ##
@@ -6,21 +6,21 @@ Click the "Deploy to Azure" button above.  You can create new resources or refer
  * Resource Group (optional)
  * Service Plan (if you don't reference exisiting one)
  * Gateway (if you don't reference existing one)
- * API App (CSharpAPI)
+ * API App (RSSConnector)
  * API App Host (this is the site behind the api app that this github code deploys to)
 
 ## API Documentation ##
-The API app has one action - Execute Script - which returns a JToken based on what the script returns.
+The API app has one action - GetFeedItem - which returns an Item containing the oldest feed item since the date provided.
 
 The action has three input parameters:
 
 | Input | Description |
 | ----- | ----- |
-| Script | C# script syntax |
-| Context Object *(optional)* | Objects to reference in the script.  Can pass in multiple objects, but base must be a single JObject { .. }. Can be accessed in script by object key (as a JToken). |
-| Libraries *(optional)* | Array of libraries to pass in and compile with script. Works from Blob/FTP Connector output of .dll files. See structure [below](#libraries-array-structure).  Default libraries can be found [here](#compiler-information) |
+| FeedUri | The location of the RSS feed to consume |
+| FromDate *(optional)* | The date/time from which a feed item is required |
+| Keywords *(optional)* | A comma-seperated list of words or phrases to match against the feed item required |
 
-#### Context Object Structure ####
+#### Item Structure ####
 ```javascript
 { "object1": { ... }, "object2": "value" }
 ```
@@ -41,42 +41,23 @@ You can use the C# Script API as a trigger.  It takes a single input of "script"
 ## Example ##
 | Step   | Info |
 |----|----|
-| Action | Execute Script |
-| C# Script | `return message;` |
-| Context Object | `{"message": {"Hello": "World"}}` |
-| Output | `{"Hello": "World"}` |
-
-You can also perform more complex scripts like the following:
-####Context Object####
-```javascript
-{ "tax": 0.06, "orders": [{"order": "order1", "subtotal": 100}] }
-```
-#### C\# Script ####
-```csharp
-foreach (var order in orders)
-{
-    order["total"] = (double)order["subtotal"] * (1 + (double)tax);
-}
-return orders;
-```
+| Action | GetFeedItem |
+| FeedUri | `https://social.msdn.microsoft.com/Forums/en-US/azurelogicapps/threads?outputAs=rss` |
+| FromDate | `09/10/2015 17:22:00` |
+| Keywords | `connectors` |
 
 #### Result ####
 ```javascript
-[ {"order": "order1", "subtotal": 100, "total": 106.0 } ] 
+{
+  "Id": "https://social.msdn.microsoft.com/Forums/en-US/a7e08f52-67f4-450b-b331-469d2ef782c5/issues-in-creating-orders-in-salesforce-using-logic-app?forum=azurelogicapps",
+  "Link": "https://social.msdn.microsoft.com/Forums/en-US/a7e08f52-67f4-450b-b331-469d2ef782c5/issues-in-creating-orders-in-salesforce-using-logic-app?forum=azurelogicapps",
+  "AuthorName": "Pooja Jagtap",
+  "AuthorUri": "https://social.msdn.microsoft.com:443/profile/pooja%20jagtap/?type=forum",
+  "Title": "issues in creating orders in salesforce using logic app",
+  "Description": "<p>Hello All,</p>\n<p>I need to create order in salesforce by getting data from Dynamics CRM.</p>\n<p>For that i have created SQL connector which will pick newly created order in dynamics CRM database.</p>\n<p>But when i am picking salesforce connector, i am getting option for all other entities to create,or update or delete like account,contacts etc.</p>\n<p>But i am not getting option in actions list of salesforce to create Order.</p>\n<p>Please suggest what i need to do so that i will get option of creating order in Salesforce connector actions list.</p>\n<p>Thnaks in advance.</p>\n<p></p>\n<p></p>\n<p></p>\n<hr>\n<p>Pooja Jagtap Software Engineer KPIT Cummins</p>",
+  "PubDate": "2015-08-17T11:04:41+00:00",
+  "LastUpdateDate": "2015-08-18T11:28:16+00:00"
+}
 ```
 
-## Compiler Information ##
-
-The following assemblies are included by default in the script:
-
-```csharp
-using System; 
-using Newtonsoft.Json; 
-using Newtonsoft.Json.Linq; 
-using System.Linq; 
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Xml;
-```
 
