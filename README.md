@@ -22,6 +22,19 @@ The action has three input parameters:
 | FromDate *(optional)* | The date/time from which a feed item is required |
 | Keywords *(optional)* | A comma-seperated list of words or phrases to match against the feed item required |
 
+The following fields are provided in the item object returned (note that not all fields are provided in all RSS feeds):
+
+| Input | Description |
+| ----- | ----- |
+| Id | Id of the individual feed item |
+| Link | Link URL to the feed item (often the same as the Id) |
+| AuthorName | Name of the feed item author |
+| AuthorUri | Uri to the author's details |
+| Title | Title of the feed item |
+| Description | The contents of the item |
+| PubDate | Publication date of the item |
+| LastUpdateDate | Date the item was last revised |
+
 ###Trigger###
 You can use the RSS Connector API as a trigger.  It takes FeedUri and Keywords as parameters and will trigger the logic app (and pass result) whenever a new item is found.  You set the frequency in which the polling on the specified Uri occurs. THe trigger will continue to fire until all new items have been processed.
 
